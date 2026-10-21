@@ -1,5 +1,6 @@
 // admin/admin.js — логика админ-панели (чистый JS, без React)
-const API_URL = "http://localhost:3000/api";
+const API = window.location.origin + '/api';
+const SERVER = window.location.origin;
 
 let adminKey = "";
 
