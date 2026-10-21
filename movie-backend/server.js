@@ -19,7 +19,7 @@ console.log("ordersRouter:", typeof ordersRouter);
 console.log("uploadRouter:", typeof uploadRouter);
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());            // разбираем JSON в теле запроса
 app.use(express.urlencoded({ extended: true }));
 
