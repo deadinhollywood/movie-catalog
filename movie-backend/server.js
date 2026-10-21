@@ -1,5 +1,7 @@
 // server.js — точка входа backend
 require("dotenv").config(); // читаем .env первым делом
+require('./db/init');
+require('./db/auto-seed')(); // ← Автонаполнение
 
 const express = require("express");
 const cors = require("cors");
@@ -20,8 +22,8 @@ console.log("uploadRouter:", typeof uploadRouter);
 
 const app = express();
 
-// ============ Middleware ============
-app.use(cors());                    // разрешаем CORS для React-фронтенда
+const cors = require('cors');
+app.use(cors()); // Разрешаем запросы с любых доменов
 app.use(express.json());            // разбираем JSON в теле запроса
 app.use(express.urlencoded({ extended: true }));
 
