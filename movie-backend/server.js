@@ -1,11 +1,12 @@
 // server.js — точка входа backend
 require("dotenv").config(); // читаем .env первым делом
-require('./db/init');
-require('./db/auto-seed')(); // ← Автонаполнение
 
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+
+// Подключаем БД (при первом запуске создаст таблицы)
+require("./db/init");
 
 const usersRouter = require("./routes/users");
 const moviesRouter = require("./routes/movies");
@@ -19,7 +20,6 @@ console.log("uploadRouter:", typeof uploadRouter);
 
 const app = express();
 
-app.use(cors()); // Разрешаем запросы с любых доменов
 app.use(express.json());            // разбираем JSON в теле запроса
 app.use(express.urlencoded({ extended: true }));
 
