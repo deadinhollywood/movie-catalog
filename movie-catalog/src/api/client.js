@@ -1,5 +1,5 @@
 // src/api/client.js — единая точка для запросов к backend
-const API_URL = "http://localhost:3000/api";
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 
 // ============ Универсальная обёртка над fetch ============
 async function request(endpoint, options = {}) {
