@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Админ-панель — КиноКаталог</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🎬 Админ-панель КиноКаталог</h1>
+    <button id="logoutBtn" style="display:none">Выйти</button>
+  </header>
+
+  <!-- Форма входа в админку -->
+  <div id="loginBox" class="login-box">
+    <h2>Вход для администратора</h2>
+    <input id="adminKey" type="password" placeholder="Ключ администратора" />
+    <button id="loginBtn">Войти</button>
+    <p id="loginError" class="error"></p>
+  </div>
+
+  <!-- Основное содержимое админки -->
+  <main id="adminContent" style="display:none">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="users">👥 Пользователи</button>
+      <button class="tab-btn" data-tab="movies">🎬 Фильмы</button>
+      <button class="tab-btn" data-tab="orders">♥ Избранное</button>
+      <button class="tab-btn" data-tab="images">🖼 Изображения</button>
+    </div>
+
+    <!-- Пользователи -->
+    <section id="tab-users" class="tab-panel active">
+      <h2>Пользователи</h2>
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Имя</th><th>Email</th><th>Роль</th><th>Создан</th><th></th></tr>
+        </thead>
+        <tbody id="usersTbody"></tbody>
+      </table>
+    </section>
+
+    <!-- Фильмы -->
+    <section id="tab-movies" class="tab-panel">
+      <h2>Фильмы</h2>
+      <form id="movieForm" class="inline-form">
+        <input name="title" placeholder="Название" required />
+        <input name="year" type="number" placeholder="Год" required />
+        <input name="genre" placeholder="Жанр" required />
+        <input name="rating" type="number" step="0.1" placeholder="Рейтинг" />
+        <input name="duration" type="number" placeholder="Минуты" />
+        <input name="director" placeholder="Режиссёр" />
+        <input name="poster" placeholder="Путь к постеру (/uploads/...)" />
+        <button type="submit">+ Добавить</button>
+      </form>
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Постер</th><th>Название</th><th>Год</th><th>Жанр</th><th>Рейтинг</th><th></th></tr>
+        </thead>
+        <tbody id="moviesTbody"></tbody>
+      </table>
+    </section>
+
+    <!-- Избранное -->
+    <section id="tab-orders" class="tab-panel">
+      <h2>Избранное пользователей</h2>
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Пользователь</th><th>Фильм</th><th>Статус</th><th>Создан</th><th></th></tr>
+        </thead>
+        <tbody id="ordersTbody"></tbody>
+      </table>
+    </section>
+
+    <!-- Изображения -->
+    <section id="tab-images" class="tab-panel">
+      <h2>Загруженные изображения</h2>
+      <form id="uploadForm" class="inline-form">
+        <input type="file" name="image" accept="image/*" required />
+        <button type="submit">⬆ Загрузить</button>
+      </form>
+      <div id="imagesGrid" class="images-grid"></div>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>

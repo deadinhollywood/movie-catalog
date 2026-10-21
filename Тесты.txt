@@ -1,0 +1,27 @@
+Добавление пользователя
+$body = @{ name = "Надя"; email = "nadya@test.com"; password = "12345" } | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:3000/api/users/register" -Method Post -Body $body -ContentType "application/json"
+
+Верный пароль
+$loginBody = @{ email = "nadya@test.com"; password = "12345" } | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:3000/api/users/login" -Method Post -Body $loginBody -ContentType "application/json"
+
+Неверный пароль
+$wrongBody = @{ email = "nadya@test.com"; password = "неверный" } | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:3000/api/users/login" -Method Post -Body $wrongBody -ContentType "application/json"
+
+Избранное:
+$order = @{ userId = 1; movieId = 1 } | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:3000/api/orders" -Method Post -Body $order -ContentType "application/json"
+
+Проверка админки
+Тест 1. Вход без ключа
+Invoke-RestMethod -Uri "http://localhost:3000/api/users"
+
+Тест 2. Тест с неправильным ключом
+$wrongHeaders = @{ "x-admin-key" = "неверный-ключ" }
+Invoke-RestMethod -Uri "http://localhost:3000/api/users" -Headers $wrongHeaders
+
+Тест 3. Вход с правильным ключом
+$rightHeaders = @{ "x-admin-key" = "super-secret-admin-key-2026" }
+Invoke-RestMethod -Uri "http://localhost:3000/api/users" -Headers $rightHeaders
