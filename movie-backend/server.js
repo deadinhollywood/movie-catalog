@@ -7,9 +7,6 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
-// Подключаем БД (при первом запуске создаст таблицы)
-require("./db/init");
-
 const usersRouter = require("./routes/users");
 const moviesRouter = require("./routes/movies");
 const ordersRouter = require("./routes/orders");
