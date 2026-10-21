@@ -22,7 +22,6 @@ console.log("uploadRouter:", typeof uploadRouter);
 
 const app = express();
 
-const cors = require('cors');
 app.use(cors()); // Разрешаем запросы с любых доменов
 app.use(express.json());            // разбираем JSON в теле запроса
 app.use(express.urlencoded({ extended: true }));
