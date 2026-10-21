@@ -1,15 +1,11 @@
 // src/api/client.js — единая точка для запросов к backend
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 
-// Секретный ключ для доступа (берем из переменных окружения Layero)
-const ADMIN_KEY = import.meta.env.VITE_ADMIN_KEY || 'sweet-shop-secret-2026'
-
 // ============ Универсальная обёртка над fetch ============
 async function request(endpoint, options = {}) {
   const response = await fetch(`${API_URL}${endpoint}`, {
     headers: {
       "Content-Type": "application/json",
-      "x-admin-key": ADMIN_KEY, // 👈 ДОБАВИЛИ СЮДА: теперь каждый запрос несет ключ
       ...(options.headers || {}),
     },
     ...options,
@@ -31,7 +27,7 @@ async function request(endpoint, options = {}) {
   return data;
 }
 
-// ============ API ============
+// ============ Пользователи ============
 export const api = {
   // Регистрация
   register: (name, email, password) =>
