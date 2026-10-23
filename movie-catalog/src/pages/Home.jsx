@@ -1,36 +1,21 @@
-import { useState, useEffect } from "react";
+// src/pages/Home.jsx
 import { Link } from "react-router-dom";
-import { api } from "../api/client";
+// 👇 Импортируем фильмы напрямую
+import { movies } from "../data/movies"; 
 import MovieCard from "../components/MovieCard";
 import Button from "../components/Button";
-import Loader from "../components/Loader";
 
 function Home() {
-  const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    api.getMovies()
-      .then((data) => {
-        setMovies(data);
-        setIsLoading(false);
-      })
-      .catch(() => setIsLoading(false));
-  }, []);
-
-  if (isLoading) return <Loader />;
-
+  // Сортируем по рейтингу и берем топ-3
   const featured = [...movies].sort((a, b) => b.rating - a.rating).slice(0, 3);
   const heroMovie = featured[0];
 
+  // Если вдруг файл с фильмами пуст
   if (!heroMovie) {
     return (
       <div className="page empty-state">
         <p className="empty-emoji">🎬</p>
         <p>Каталог пуст</p>
-        <p className="empty-hint">
-          Добавьте фильмы через <a href="http://localhost:3000/admin/">админ-панель</a>
-        </p>
       </div>
     );
   }
@@ -47,11 +32,13 @@ function Home() {
           </p>
           <div className="hero-actions">
             <Link to="/catalog"><Button>Смотреть каталог</Button></Link>
-            <Link to={`/catalog/${heroMovie.id}`}><Button variant="outline">🎬 Фильм дня</Button></Link>
+            {/* Ссылка на фильм дня (героя) */}
+            <Link to={`/catalog/${heroMovie.title}`}><Button variant="outline">🎬 Фильм дня</Button></Link>
           </div>
         </div>
         <div className="hero-visual">
-          <img src={heroMovie.poster} alt="" />
+          {/* Постер главного фильма */}
+          <img src={heroMovie.poster} alt={heroMovie.title} />
         </div>
       </section>
 
@@ -61,8 +48,8 @@ function Home() {
           <Link to="/catalog" className="link-more">Все фильмы →</Link>
         </div>
         <div className="movies-grid">
-          {featured.map((movie) => (
-            <MovieCard key={movie.id} {...movie} />
+          {featured.map((movie, index) => (
+            <MovieCard key={index} {...movie} />
           ))}
         </div>
       </section>
