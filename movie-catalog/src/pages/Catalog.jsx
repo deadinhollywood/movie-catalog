@@ -1,43 +1,20 @@
-import { useState, useEffect } from "react";
-import { api } from "../api/client";
+import { useState } from "react";
+// 👇 Импортируем наши локальные данные вместо API
+import { movies as allMovies } from "../data/movies"; 
 import MovieCard from "../components/MovieCard";
 import SearchBar from "../components/SearchBar";
-import Loader from "../components/Loader";
 
 function Catalog() {
-  const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
+  // Локальные состояния для фильтров
   const [search, setSearch] = useState("");
   const [genre, setGenre] = useState("Все");
   const [sortBy, setSortBy] = useState("default");
 
-  // Загружаем фильмы с backend при монтировании
-  useEffect(() => {
-    let cancelled = false;
+  // Собираем список уникальных жанров из наших данных
+  const genres = ["Все", ...new Set(allMovies.map((m) => m.genre))];
 
-    async function load() {
-      try {
-        const data = await api.getMovies();
-        if (!cancelled) {
-          setMovies(data);
-          setIsLoading(false);
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setError("Не удалось загрузить фильмы");
-          setIsLoading(false);
-        }
-      }
-    }
-    load();
-
-    return () => { cancelled = true; };
-  }, []);
-
-  const genres = ["Все", ...new Set(movies.map((m) => m.genre))];
-
-  const filtered = movies
+  // Фильтрация и сортировка происходят "на лету" в памяти браузера
+  const filtered = allMovies
     .filter((m) => {
       const matchesSearch = m.title.toLowerCase().includes(search.toLowerCase());
       const matchesGenre = genre === "Все" || m.genre === genre;
@@ -50,15 +27,12 @@ function Catalog() {
       return 0;
     });
 
-  if (isLoading) return <Loader />;
-  if (error) return <div className="page empty-state"><p>{error}</p></div>;
-
   return (
     <div className="page">
       <div className="page-header">
         <h1>Каталог фильмов</h1>
         <p className="page-subtitle">
-          Найдено: {filtered.length} из {movies.length}
+          Найдено: {filtered.length} из {allMovies.length}
         </p>
       </div>
 
@@ -91,8 +65,9 @@ function Catalog() {
         </div>
       ) : (
         <div className="movies-grid">
-          {filtered.map((movie) => (
-            <MovieCard key={movie.id} {...movie} />
+          {filtered.map((movie, index) => (
+            // 👇 Используем index как key (если в данных нет уникального id)
+            <MovieCard key={index} {...movie} />
           ))}
         </div>
       )}
